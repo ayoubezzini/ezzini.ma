@@ -1,0 +1,36 @@
+# ezzini.ma, HTTPS. The root is the `current` symlink: laravel.conf resolves it with $realpath_root, so a deploy switches atomically.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ezzini.ma www.ezzini.ma;
+    location ^~ /.well-known/acme-challenge/ { root /var/www/letsencrypt; }
+    location / { return 301 https://ezzini.ma$request_uri; }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name www.ezzini.ma;
+    ssl_certificate     /etc/letsencrypt/live/ezzini.ma/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/ezzini.ma/privkey.pem;
+    include snippets/ssl-params.conf;
+    return 301 https://ezzini.ma$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name ezzini.ma;
+    root /var/www/ezzini.ma/current/public;
+    set $php_socket /run/php/php8.4-fpm-ezzini.sock;
+
+    ssl_certificate     /etc/letsencrypt/live/ezzini.ma/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/ezzini.ma/privkey.pem;
+    include snippets/ssl-params.conf;
+
+    access_log /var/log/nginx/ezzini.ma.access.log;
+    error_log  /var/log/nginx/ezzini.ma.error.log warn;
+
+    include snippets/security-headers.conf;
+    include snippets/laravel.conf;
+}

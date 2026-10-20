@@ -1,14 +1,1 @@
-.git
-.github
-.idea
-.env
-node_modules
-vendor
-public/build
-public/hot
-public/documents
-storage/logs/*
-storage/framework/views/*
-storage/framework/cache/data/*
-tests
-bootstrap/cache/*.php
+*

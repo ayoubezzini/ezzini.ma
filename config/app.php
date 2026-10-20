@@ -86,8 +86,8 @@ return [
 
     'locales' => ['en', 'fr'],
 
-    // Commit being served (Coolify passes SOURCE_COMMIT at build time), shown in the footer.
-    'revision' => env('SOURCE_COMMIT'),
+    // Commit being served, shown in the footer: written to REVISION by deploy/deploy.sh.
+    'revision' => is_file(base_path('REVISION')) ? trim(file_get_contents(base_path('REVISION'))) : null,
 
     /*
     |--------------------------------------------------------------------------

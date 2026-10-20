@@ -12,10 +12,10 @@ Ayoub Ezzini's résumé and portfolio (open source). Laravel 13, Blade, Alpine.j
 - The CV page (`resources/views/resume.blade.php`) is printed to PDF by `php artisan render-documents`: use canonical URLs from `config('app.url')` there, not `route()`, and avoid `position: relative` around text (positioned elements are extracted after the normal flow by ATS parsers).
 - Every visible change must work in both themes, both languages, on a phone, and with reduced motion.
 
-## Docker
+## Docker (local development only)
 
 No PHP, Composer or Node on the host: `docker compose exec app ...` (php-fpm + nginx on :8084, Chromium included), `vite` service on :5176, Mailpit on :8027. Tests: `docker compose exec app ./vendor/bin/pest`.
 
 ## Deployment
 
-Push to `main` → `.github/workflows/deploy.yml` tests, triggers Coolify (`compose.production.yaml`, `Dockerfile` target `production`), waits, purges Cloudflare, checks the live commit.
+Production is native (nginx + PHP 8.4-FPM on the Hetzner server that also hosts Khlass, eStock and Nuvo; see `/var/www/khlass.ma/SERVER.md` there). Push to `main` → `.github/workflows/deploy.yml` tests, then SSHes with a key restricted to `deploy-ezzini` (`deploy/deploy.sh`): new release folder, composer, assets, `render-documents`, `optimize`, atomic `current` symlink switch, php-fpm reload, `/up` check with automatic rollback. Then Cloudflare purge and a live-commit check. Server setup lives in `deploy/` (`provision.sh` is idempotent). Never put the server's IP in the repository: it would expose the origin behind Cloudflare.

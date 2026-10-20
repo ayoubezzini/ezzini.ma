@@ -41,53 +41,40 @@ jobs:
           php artisan key:generate
           vendor/bin/pest
 
-  # Coolify builds the image (which renders the CV PDFs), swaps containers once the health check passes,
-  # then Cloudflare's cache is purged and the live site must answer with this very commit.
+  # The server builds the release (composer, assets, CV PDFs), switches to it atomically and rolls back if /up fails.
+  # The SSH key can only run deploy-ezzini (forced command), and the host key is pinned.
   deploy:
     needs: test
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    concurrency: production
     environment:
       name: production
       url: https://ezzini.ma
     steps:
-      - name: Trigger the Coolify deployment
-        id: coolify
+      - name: Deploy on the server
         env:
-          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
-          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
-          COOLIFY_APPLICATION_UUID: ${{ secrets.COOLIFY_APPLICATION_UUID }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
         run: |
-          response=$(curl -fsS -H "Authorization: Bearer $COOLIFY_TOKEN" "$COOLIFY_URL/api/v1/deploy?uuid=$COOLIFY_APPLICATION_UUID&force=false")
-          echo "$response"
-          echo "deployment=$(echo "$response" | jq -r '.deployments[0].deployment_uuid')" >> "$GITHUB_OUTPUT"
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/deploy ~/.ssh/known_hosts
 
-      - name: Wait for the deployment to finish
-        env:
-          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
-          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
-          DEPLOYMENT: ${{ steps.coolify.outputs.deployment }}
-        run: |
-          for attempt in $(seq 1 90); do
-            status=$(curl -fsS -H "Authorization: Bearer $COOLIFY_TOKEN" "$COOLIFY_URL/api/v1/deployments/$DEPLOYMENT" | jq -r '.status')
-            echo "Attempt $attempt: $status"
-
-            case "$status" in
-              finished) exit 0 ;;
-              failed|cancelled*) exit 1 ;;
-            esac
-
-            sleep 10
-          done
-
-          echo "The deployment didn't finish in 15 minutes."
-          exit 1
+          ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "root@$DEPLOY_HOST" "$GITHUB_SHA"
 
       - name: Purge the Cloudflare cache
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
         run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ZONE_ID" ]; then
+            echo "::warning::CLOUDFLARE_API_TOKEN or CLOUDFLARE_ZONE_ID is missing: Cloudflare may keep serving the previous version."
+            exit 0
+          fi
+
           curl -fsS -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/purge_cache" \
             -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
             -H "Content-Type: application/json" \

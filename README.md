@@ -48,19 +48,61 @@ Copy supports inline Markdown (`**bold**`, `` `code` ``, `[links](:maline)`) and
 
 ## Deployment
 
+No platform, no containers in production: a Hetzner server running nginx and PHP-FPM (the same one that hosts my other products), and one script.
+
 A push to `main` is the whole release process:
 
 1. GitHub Actions runs the tests and builds the assets.
-2. It asks Coolify (on a Hetzner server) to deploy. Coolify builds the `production` target of the [`Dockerfile`](Dockerfile), which renders the documents, and swaps containers once `/up` answers.
-3. The workflow waits for the deployment, purges Cloudflare's cache, then checks that the live page mentions the new commit.
+2. It connects over SSH with a key that can do exactly one thing: run [`deploy/deploy.sh`](deploy/deploy.sh) (a forced command in `authorized_keys`).
+3. The script builds the commit in a fresh `releases/<date>-<sha>` folder (Composer, assets, then the CV PDFs and social cards with headless Chrome), caches the config, and switches the `current` symlink. Nginx resolves it with `$realpath_root`, so the switch is atomic: no maintenance mode, no half-deployed request.
+4. If `/up` doesn't answer, it switches straight back to the previous release. The last five releases are kept.
+5. The workflow purges Cloudflare's cache, then checks that the live page mentions the new commit (it's in the footer).
+
+On the server:
+
+```
+/var/www/ezzini.ma/
+├── current -> releases/20261020-153000-a1b2c3d
+├── releases/               last five builds
+├── repository.git/         bare clone, fetched on each deploy
+├── storage/                shared between releases (logs, deploy.log, view cache)
+└── .env                    root:www-data 640
+```
+
+```bash
+deploy-ezzini               # deploy the latest commit of main by hand
+deploy-ezzini --rollback    # back to the previous release, instantly
+tail -f /var/www/ezzini.ma/storage/logs/deploy.log
+```
 
 ### One-time setup
 
-**Coolify**: new application from this repository, build pack *Docker Compose*, file `compose.production.yaml`, domain `https://ezzini.ma`. Turn **off** automatic deployment on push (the workflow deploys once the tests pass) and turn **on** *Include Source Commit in Build* (the footer shows it). Variables: `APP_KEY`, `MAIL_PASSWORD` (a Resend API key), `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`.
+**Server**: copy `deploy/` over and run [`deploy/provision.sh`](deploy/provision.sh) as root. It creates the folders, the bare clone, a `.env` with a fresh `APP_KEY`, the PHP-FPM pool, the nginx site and the `deploy-ezzini` command. It's idempotent: run it again after changing anything in `deploy/`.
 
-**Cloudflare**: proxied DNS record for `ezzini.ma` pointing to the server, SSL mode *Full (strict)*, a cache rule *Eligible for cache* on `ezzini.ma/*` (HTML isn't cached by default; the app's `Cache-Control` headers decide the rest), a Turnstile widget for `ezzini.ma`, and an API token limited to *Zone · Cache Purge* on this zone. In Resend, verify `ezzini.ma` so the site can send from `site@ezzini.ma`.
+```bash
+scp -r deploy root@<server>:/tmp/ezzini-deploy
+ssh root@<server> bash /tmp/ezzini-deploy/provision.sh --certificate --authorize-key "$(cat github-actions.pub)"
+```
 
-**GitHub secrets** (environment `production`): `COOLIFY_URL`, `COOLIFY_TOKEN`, `COOLIFY_APPLICATION_UUID`, `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ZONE_ID`.
+Then fill in `MAIL_USERNAME`, `MAIL_PASSWORD`, `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` in `/var/www/ezzini.ma/.env`.
+
+**GitHub**: add the server's repository key as a read-only deploy key. Then add these secrets to the `production` environment:
+
+| Secret | Value |
+|---|---|
+| `DEPLOY_HOST` | The server's IP. Kept secret so the origin stays hidden behind Cloudflare. |
+| `DEPLOY_SSH_KEY` | Private half of the key authorized with `--authorize-key` |
+| `DEPLOY_KNOWN_HOSTS` | Output of `ssh-keyscan -t ed25519 <server>`, so CI only ever talks to the real server |
+| `CLOUDFLARE_API_TOKEN` | A token limited to *Zone · Cache Purge* on ezzini.ma |
+| `CLOUDFLARE_ZONE_ID` | From the ezzini.ma overview page in Cloudflare |
+
+**Cloudflare**:
+- A proxied DNS record for `ezzini.ma` and `www`, SSL mode *Full (strict)*.
+- A cache rule *Eligible for cache* on `ezzini.ma/*`. Cloudflare doesn't cache HTML by default; the app's `Cache-Control` headers decide the rest.
+- A Turnstile widget for `ezzini.ma`.
+- *Email Routing* forwards `ayoub@ezzini.ma` to a real inbox.
+
+**Brevo**: add `ezzini.ma` as a sender domain and create the DNS records it asks for (DKIM, the Brevo code, DMARC) in Cloudflare, so the contact form can send from `site@ezzini.ma`. Email Routing already publishes an SPF record: add Brevo to it (`include:spf.brevo.com`) rather than creating a second one.
 
 ## License
 

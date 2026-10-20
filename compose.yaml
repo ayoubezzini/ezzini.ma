@@ -2,7 +2,6 @@ services:
   app:
     build:
       context: .
-      target: development
     image: ezzini-app
     ports:
       - "8084:8080"

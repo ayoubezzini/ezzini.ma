@@ -8,18 +8,20 @@ use Illuminate\Process\InvokedProcess;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Str;
 use RuntimeException;
 use Throwable;
 
 class RenderDocumentsCommand extends Command
 {
-    protected $signature = 'render-documents {--port=8123}';
+    protected $signature = 'render-documents {--port= : Defaults to a free port}';
 
     protected $description = 'Render the CV PDFs and the social cards from the real pages with headless Chromium';
 
     public function handle(): int
     {
-        $baseUrl = "http://127.0.0.1:{$this->option('port')}";
+        $port = $this->option('port') ?: $this->freePort();
+        $baseUrl = "http://127.0.0.1:{$port}";
 
         File::ensureDirectoryExists(public_path('documents'));
 
@@ -27,7 +29,7 @@ class RenderDocumentsCommand extends Command
 
         $server = Process::forever()
             ->path(public_path())
-            ->start([PHP_BINARY, '-S', "127.0.0.1:{$this->option('port')}", base_path('vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php')]);
+            ->start([PHP_BINARY, '-S', "127.0.0.1:{$port}", base_path('vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php')]);
 
         try {
             $this->waitFor($baseUrl, $server);
@@ -57,6 +59,17 @@ class RenderDocumentsCommand extends Command
         $this->comment("Rendered {$documentCount} documents in public/documents.");
 
         return self::SUCCESS;
+    }
+
+    // The server is shared with other services (ClickHouse listens on 8123, for one): let the OS pick.
+    private function freePort(): int
+    {
+        $socket = stream_socket_server('tcp://127.0.0.1:0');
+        $port = (int) Str::afterLast(stream_socket_get_name($socket, false), ':');
+
+        fclose($socket);
+
+        return $port;
     }
 
     private function waitFor(string $baseUrl, InvokedProcess $server): void

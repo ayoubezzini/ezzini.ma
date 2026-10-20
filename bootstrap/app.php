@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\AddSecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,13 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->trustProxies(at: '*');
-
         // No sessions, cookies or CSRF tokens: every page is identical for every visitor, so Cloudflare can cache it.
         // The contact form is protected by Turnstile and a rate limit instead.
+        // Security headers and the visitor's real IP (from Cloudflare only) are handled by nginx.
         $middleware->group('web', [
             SubstituteBindings::class,
-            AddSecurityHeaders::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

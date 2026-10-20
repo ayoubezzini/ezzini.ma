@@ -24,6 +24,5 @@
         <env name="MAIL_MAILER" value="array"/>
         <env name="TURNSTILE_SITE_KEY" value=""/>
         <env name="TURNSTILE_SECRET_KEY" value=""/>
-        <env name="SOURCE_COMMIT" value=""/>
     </php>
 </phpunit>
