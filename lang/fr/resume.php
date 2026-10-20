@@ -102,8 +102,6 @@ return [
                 'senior' => 'Ingénieur logiciel senior',
             ],
             'highlights' => [
-                'Création de quatre des packages Laravel open source de l’entreprise, [Verdant UI](:verdant), [Pinert](:pinert), [Findle](:findle) et [Harvest](:harvest), parmi de nombreux autres packages et services internes.',
-                'Rédaction d’articles pour le [blog de l’entreprise](:blog) : PostgreSQL, tests, serveurs MCP et les coulisses de nos packages.',
                 'Développement et maintenance de plusieurs applications clientes avec Laravel, Symfony, Vue.js et Alpine.js.',
                 'Administration de bases MySQL et PostgreSQL, qui restent rapides à mesure que les données grossissent.',
                 'Conteneurisation des environnements de développement et de déploiement avec Docker.',

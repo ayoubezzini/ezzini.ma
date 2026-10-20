@@ -102,8 +102,6 @@ return [
                 'senior' => 'Senior Software Engineer',
             ],
             'highlights' => [
-                'Created four of the company’s open-source Laravel packages, [Verdant UI](:verdant), [Pinert](:pinert), [Findle](:findle) and [Harvest](:harvest), among many more in-house packages and services.',
-                'Write for the [company blog](:blog): PostgreSQL, testing, MCP servers and the stories behind our packages.',
                 'Build and maintain several client applications with Laravel, Symfony, Vue.js and Alpine.js.',
                 'Run MySQL and PostgreSQL databases and keep them fast as data grows.',
                 'Containerise development and deployment environments with Docker.',

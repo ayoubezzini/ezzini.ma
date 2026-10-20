@@ -32,10 +32,6 @@ return [
         'nuvo' => 'https://nuvo.ma',
         'packages' => 'https://dennenboom.be/packages',
         'blog' => 'https://dennenboom.be/blog',
-        'verdant' => 'https://github.com/ben-dennenboom/verdant-ui',
-        'pinert' => 'https://github.com/ben-dennenboom/pinert',
-        'findle' => 'https://github.com/ben-dennenboom/Findle',
-        'harvest' => 'https://github.com/ben-dennenboom/harvest',
     ],
 
     // Screenshots live in public/images/projects/{locale}/{slug}.webp, in the language of the page.
