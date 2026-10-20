@@ -74,3 +74,10 @@ it('links every open-source package and every article', function (string $page) 
         $response->assertSee('href="'.$article['url'].'"', false);
     }
 })->with(['/en', '/fr', '/en/cv', '/fr/cv']);
+
+it('versions document URLs with the deployed commit so caches never serve an old CV', function () {
+    config(['app.revision' => 'dd01c27a9785e8ea1d3d869c7ed270ca4fedb1b4']);
+
+    expect(App\Resume\Resume::documentUrl('documents/ayoub-ezzini-cv-en.pdf'))
+        ->toEndWith('/documents/ayoub-ezzini-cv-en.pdf?v=dd01c27');
+});

@@ -33,7 +33,21 @@ class Resume
     public static function downloadUrl(string $locale): string
     {
         return File::exists(public_path(self::pdfPath($locale))) ?
-            asset(self::pdfPath($locale)) :
+            self::documentUrl(self::pdfPath($locale)) :
             route('resume', ['locale' => $locale]);
+    }
+
+    /** Documents keep their name across deploys: the commit in the URL keeps Cloudflare (and browsers) from serving an old one. */
+    public static function documentUrl(string $path): string
+    {
+        $url = asset($path);
+
+        if (! config('app.revision')) {
+            return $url;
+        }
+
+        $version = substr(config('app.revision'), 0, 7);
+
+        return "{$url}?v={$version}";
     }
 }

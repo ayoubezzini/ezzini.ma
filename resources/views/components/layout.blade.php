@@ -5,7 +5,7 @@
 
 @php
     $locale = app()->getLocale();
-    $socialCard = asset(App\Resume\Resume::socialCardPath($locale));
+    $socialCard = App\Resume\Resume::documentUrl(App\Resume\Resume::socialCardPath($locale));
 @endphp
 
 <!DOCTYPE html>
