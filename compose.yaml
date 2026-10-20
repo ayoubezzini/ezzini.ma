@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+      target: development
+    image: ezzini-app
+    ports:
+      - "8084:8080"
+    volumes:
+      - .:/var/www/html
+
+  vite:
+    image: node:22-bookworm-slim
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "5176:5176"
+    volumes:
+      - .:/app
+
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "8027:8025"

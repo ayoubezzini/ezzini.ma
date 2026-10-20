@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /*/social-card
+
+Sitemap: https://ezzini.ma/sitemap.xml
