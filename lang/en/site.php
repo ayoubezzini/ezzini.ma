@@ -13,7 +13,8 @@ return [
 
     'nav' => [
         'label' => 'Main',
-        'home' => 'Ayoub Ezzini, home',
+        'open' => 'Open the menu',
+        'close' => 'Close the menu',
         'work' => 'Work',
         'experience' => 'Experience',
         'open_source' => 'Open source',

@@ -85,9 +85,28 @@ Alpine.data('clock', (timeZone, locale) => ({
 
 Alpine.data('header', () => ({
     scrolled: window.scrollY > 4,
+    menu: false,
 
     init() {
         window.addEventListener('scroll', () => (this.scrolled = window.scrollY > 4), { passive: true });
+    },
+
+    // The open menu locks the page scroll: close it first, then scroll once the lock is released.
+    go(event) {
+        const link = event.currentTarget;
+
+        this.menu = false;
+
+        if (link.pathname !== window.location.pathname) {
+            return;
+        }
+
+        event.preventDefault();
+
+        requestAnimationFrame(() => {
+            document.querySelector(link.hash)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+            history.replaceState(null, '', link.hash);
+        });
     },
 }));
 

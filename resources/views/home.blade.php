@@ -10,8 +10,9 @@
         {{-- Hero --}}
         <section class="pt-16 pb-20 sm:pt-24 sm:pb-28" aria-labelledby="hero-title">
             <p class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-muted" data-reveal>
-                <span>{{ __('resume.role') }}</span>
-                <span class="text-line-strong" aria-hidden="true">/</span>
+                {{-- On phones the headline right below already says it, and the clock would wrap. --}}
+                <span class="hidden sm:inline">{{ __('resume.role') }}</span>
+                <span class="hidden text-line-strong sm:inline" aria-hidden="true">/</span>
                 <span class="inline-flex items-center gap-1.5">
                     <x-icon name="pin" class="size-3.5 text-subtle" />
                     {{ __('resume.location') }}
@@ -36,22 +37,30 @@
                 @copy('resume.intro')
             </p>
 
-            <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal style="--reveal-delay: 180ms">
-                <a href="#contact" class="group inline-flex h-11 items-center gap-2 rounded-full bg-ink pr-4 pl-5 text-sm font-medium text-canvas shadow-soft transition-all hover:shadow-lifted active:scale-[0.98]">
-                    {{ __('site.hero.contact') }}
-                    <x-icon name="arrow-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                </a>
-                <a href="{{ Resume::downloadUrl(app()->getLocale()) }}" class="group inline-flex h-11 items-center gap-2 rounded-full border border-line-strong bg-surface px-5 text-sm font-medium text-ink transition-colors hover:border-ink/40 active:scale-[0.98]">
-                    <x-icon name="download" class="size-4 text-muted transition-transform duration-300 group-hover:translate-y-0.5" />
-                    {{ __('site.hero.resume') }}
-                </a>
+            {{-- Buttons on one row, profile links on the next on phones; all on one line from sm. --}}
+            <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-3" data-reveal style="--reveal-delay: 180ms">
+                <div class="flex flex-wrap items-center gap-3">
+                    <a href="#contact" class="group inline-flex h-11 items-center gap-2 rounded-full bg-ink pr-4 pl-5 text-sm font-medium text-canvas shadow-soft transition-all hover:shadow-lifted active:scale-[0.98]">
+                        {{ __('site.hero.contact') }}
+                        <x-icon name="arrow-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </a>
+                    <a href="{{ Resume::downloadUrl(app()->getLocale()) }}" class="group inline-flex h-11 items-center gap-2 rounded-full border border-line-strong bg-surface px-5 text-sm font-medium text-ink transition-colors hover:border-ink/40 active:scale-[0.98]">
+                        <x-icon name="download" class="size-4 text-muted transition-transform duration-300 group-hover:translate-y-0.5" />
+                        {{ __('site.hero.resume') }}
+                    </a>
+                </div>
+
                 <span class="mx-1 hidden h-5 w-px bg-line sm:block" aria-hidden="true"></span>
-                <a href="{{ config('resume.links.github') }}" target="_blank" rel="me noopener" class="grid size-11 place-items-center rounded-full text-muted transition-colors hover:bg-sunken hover:text-ink" aria-label="GitHub">
-                    <x-icon name="github" class="size-5" />
-                </a>
-                <a href="{{ config('resume.links.linkedin') }}" target="_blank" rel="me noopener" class="grid size-11 place-items-center rounded-full text-muted transition-colors hover:bg-sunken hover:text-ink" aria-label="LinkedIn">
-                    <x-icon name="linkedin" class="size-5" />
-                </a>
+
+                {{-- -ml-3: the icon glyph, not its 44px tap target, lines up with the buttons above. --}}
+                <div class="-ml-3 flex items-center gap-1 sm:ml-0">
+                    <a href="{{ config('resume.links.github') }}" target="_blank" rel="me noopener" class="grid size-11 place-items-center rounded-full text-muted transition-colors hover:bg-sunken hover:text-ink" aria-label="GitHub">
+                        <x-icon name="github" class="size-5" />
+                    </a>
+                    <a href="{{ config('resume.links.linkedin') }}" target="_blank" rel="me noopener" class="grid size-11 place-items-center rounded-full text-muted transition-colors hover:bg-sunken hover:text-ink" aria-label="LinkedIn">
+                        <x-icon name="linkedin" class="size-5" />
+                    </a>
+                </div>
             </div>
 
             <dl class="mt-16 grid grid-cols-3 border-t border-line sm:mt-20" data-reveal style="--reveal-delay: 240ms">

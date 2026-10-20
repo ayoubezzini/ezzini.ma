@@ -13,7 +13,8 @@ return [
 
     'nav' => [
         'label' => 'Principale',
-        'home' => 'Ayoub Ezzini, accueil',
+        'open' => 'Ouvrir le menu',
+        'close' => 'Fermer le menu',
         'work' => 'Projets',
         'experience' => 'Parcours',
         'open_source' => 'Open source',
