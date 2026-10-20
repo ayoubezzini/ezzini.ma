@@ -66,6 +66,7 @@
                 'name' => config('resume.name'),
                 'jobTitle' => __('resume.role'),
                 'email' => 'mailto:'.config('resume.email'),
+                'telephone' => config('resume.phone'),
                 'url' => route('home'),
                 'image' => $socialCard,
                 'address' => ['@type' => 'PostalAddress', 'addressCountry' => 'MA'],

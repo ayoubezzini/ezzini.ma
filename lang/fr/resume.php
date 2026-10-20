@@ -102,6 +102,8 @@ return [
                 'senior' => 'Ingénieur logiciel senior',
             ],
             'highlights' => [
+                'Création de quatre des packages Laravel open source de l’entreprise, [Verdant UI](:verdant), [Pinert](:pinert), [Findle](:findle) et [Harvest](:harvest), parmi de nombreux autres packages et services internes.',
+                'Rédaction d’articles pour le [blog de l’entreprise](:blog) : PostgreSQL, tests, serveurs MCP et les coulisses de nos packages.',
                 'Développement et maintenance de plusieurs applications clientes avec Laravel, Symfony, Vue.js et Alpine.js.',
                 'Administration de bases MySQL et PostgreSQL, qui restent rapides à mesure que les données grossissent.',
                 'Conteneurisation des environnements de développement et de déploiement avec Docker.',
@@ -151,6 +153,25 @@ return [
             'highlights' => [
                 'Premiers pas professionnels : sites web en PHP, CSS et JavaScript.',
             ],
+        ],
+    ],
+
+    'packages' => [
+        'verdant' => [
+            'summary' => 'Bibliothèque de plus de 70 composants Blade pour Laravel',
+            'description' => 'Plus de 70 composants Blade pour Laravel, basés sur Alpine.js et Tailwind CSS : formulaires avec champs traduisibles, texte riche et recadrage d’images, tableaux dynamiques avec filtres et gestion des colonnes, modales, barres latérales et calendriers.',
+        ],
+        'pinert' => [
+            'summary' => 'Les exceptions de tous les projets Laravel, directement sur Slack',
+            'description' => 'Des rapports d’exception détaillés envoyés sur Slack dès qu’ils surviennent, pour que les erreurs de tous les projets arrivent dans un seul canal.',
+        ],
+        'findle' => [
+            'summary' => 'Statistiques de pages vues compatibles RGPD, avec détection des robots',
+            'description' => 'Des statistiques de pages vues compatibles RGPD : identifiants de visiteurs hachés au lieu de données personnelles, détection des robots et tableau de bord.',
+        ],
+        'harvest' => [
+            'summary' => 'Automatisation des déploiements par SSH, inspirée de Laravel Envoy',
+            'description' => 'L’automatisation des déploiements par SSH, inspirée de Laravel Envoy : scénarios scriptés, confirmations, hôtes de rebond et gestion de sudo.',
         ],
     ],
 

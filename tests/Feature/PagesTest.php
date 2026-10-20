@@ -56,3 +56,21 @@ it('lists every localized page in the sitemap', function () {
 
     expect(substr_count($response->getContent(), '<loc>'))->toBe((2 + Project::all()->count()) * 2);
 });
+
+it('shows the phone number with a tel link on the site and the résumé', function (string $page) {
+    $this->get($page)
+        ->assertSee('+212 623-357087')
+        ->assertSee('href="tel:+212623357087"', false);
+})->with(['/en', '/fr', '/en/cv', '/fr/cv']);
+
+it('links every open-source package and every article', function (string $page) {
+    $response = $this->get($page);
+
+    foreach (config('resume.packages') as $package) {
+        $response->assertSee('href="'.$package['repository'].'"', false);
+    }
+
+    foreach (config('resume.articles') as $article) {
+        $response->assertSee('href="'.$article['url'].'"', false);
+    }
+})->with(['/en', '/fr', '/en/cv', '/fr/cv']);

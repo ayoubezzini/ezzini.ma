@@ -125,7 +125,16 @@
 
                         <div>
                             <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                                <h3 class="text-xl font-semibold tracking-[-0.02em]">{{ $job['company'] }}</h3>
+                                <h3 class="text-xl font-semibold tracking-[-0.02em]">
+                                    @if($job['url'])
+                                        <a href="{{ $job['url'] }}" target="_blank" rel="noopener" class="group/company inline-flex items-center gap-1 transition-colors hover:text-accent">
+                                            {{ $job['company'] }}
+                                            <x-icon name="arrow-up-right" class="size-3.5 text-subtle transition-transform duration-300 group-hover/company:translate-x-px group-hover/company:-translate-y-px" />
+                                        </a>
+                                    @else
+                                        {{ $job['company'] }}
+                                    @endif
+                                </h3>
                                 <p class="text-sm text-subtle">{{ __("resume.experience.{$key}.location") }}</p>
                             </div>
 
@@ -159,9 +168,67 @@
             </ol>
         </section>
 
+        {{-- Open source & writing --}}
+        <section id="open-source" class="scroll-mt-20 border-t border-line py-20 sm:py-28" aria-labelledby="open-source-title">
+            <x-section-heading number="03" :eyebrow="__('site.sections.open_source.eyebrow')" :title="__('site.sections.open_source.title')" id="open-source-title">
+                <x-slot:intro>{{ __('site.sections.open_source.intro') }}</x-slot:intro>
+            </x-section-heading>
+
+            <ul class="mt-14 grid gap-4 sm:grid-cols-2">
+                @foreach(config('resume.packages') as $key => $package)
+                    <li class="flex flex-col rounded-2xl border border-line bg-surface p-6 shadow-soft transition duration-300 hover:-translate-y-0.5 hover:shadow-lifted sm:p-7" data-reveal style="--reveal-delay: {{ $loop->index * 50 }}ms">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <h3 class="text-lg font-semibold tracking-[-0.02em]">{{ $package['name'] }}</h3>
+                            <span class="rounded-full bg-accent-soft px-2.5 py-1 font-mono text-[0.6875rem] text-accent">{{ __('site.sections.open_source.creator') }} · {{ $package['year'] }}</span>
+                        </div>
+                        <p class="mt-3 flex-1 leading-relaxed text-pretty text-muted">{{ __("resume.packages.{$key}.description") }}</p>
+                        <div class="mt-6 flex items-center gap-5 text-sm font-medium">
+                            <a href="{{ $package['repository'] }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 transition-colors hover:text-accent">
+                                <x-icon name="github" class="size-4" />
+                                {{ __('site.sections.open_source.source') }}
+                            </a>
+                            @if($package['documentation'])
+                                <a href="{{ $package['documentation'] }}" target="_blank" rel="noopener" class="group/docs inline-flex items-center gap-1 text-muted transition-colors hover:text-ink">
+                                    {{ __('site.sections.open_source.documentation') }}
+                                    <x-icon name="arrow-up-right" class="size-3.5 transition-transform duration-300 group-hover/docs:translate-x-px group-hover/docs:-translate-y-px" />
+                                </a>
+                            @endif
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+
+            <a href="{{ config('resume.urls.packages') }}" target="_blank" rel="noopener" class="group mt-6 inline-flex items-center gap-1 text-sm font-medium text-muted transition-colors hover:text-ink" data-reveal>
+                {{ __('site.sections.open_source.all_packages') }}
+                <x-icon name="arrow-up-right" class="size-3.5 transition-transform duration-300 group-hover:translate-x-px group-hover:-translate-y-px" />
+            </a>
+
+            <div class="mt-20 grid gap-x-12 gap-y-8 border-t border-line pt-12 lg:grid-cols-12">
+                <div class="lg:col-span-4" data-reveal>
+                    <h3 class="font-mono text-xs uppercase tracking-[0.14em] text-subtle">{{ __('site.sections.open_source.writing') }}</h3>
+                    <p class="mt-4 leading-relaxed text-pretty text-muted">{{ __('site.sections.open_source.writing_intro') }}</p>
+                    <a href="{{ config('resume.urls.blog') }}" target="_blank" rel="noopener" class="group mt-5 inline-flex items-center gap-1 text-sm font-medium transition-colors hover:text-accent">
+                        {{ __('site.sections.open_source.all_articles') }}
+                        <x-icon name="arrow-up-right" class="size-3.5 transition-transform duration-300 group-hover:translate-x-px group-hover:-translate-y-px" />
+                    </a>
+                </div>
+
+                <ol class="divide-y divide-line border-y border-line lg:col-span-8">
+                    @foreach(config('resume.articles') as $article)
+                        <li data-reveal>
+                            <a href="{{ $article['url'] }}" target="_blank" rel="noopener" hreflang="en" class="group flex items-baseline justify-between gap-6 py-4">
+                                <span lang="en" class="font-medium text-pretty transition-colors group-hover:text-accent">{{ $article['title'] }}</span>
+                                <time datetime="{{ $article['date'] }}" class="shrink-0 font-mono text-xs text-subtle tabular-nums">{{ Carbon\CarbonImmutable::parse($article['date'])->locale(app()->getLocale())->translatedFormat('M Y') }}</time>
+                            </a>
+                        </li>
+                    @endforeach
+                </ol>
+            </div>
+        </section>
+
         {{-- Approach --}}
         <section id="approach" class="scroll-mt-20 border-t border-line py-20 sm:py-28" aria-labelledby="approach-title">
-            <x-section-heading number="03" :eyebrow="__('site.sections.approach.eyebrow')" :title="__('site.sections.approach.title')" id="approach-title" />
+            <x-section-heading number="04" :eyebrow="__('site.sections.approach.eyebrow')" :title="__('site.sections.approach.title')" id="approach-title" />
 
             <div class="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2" data-reveal>
                 @foreach(__('resume.principles') as $key => $principle)
@@ -176,7 +243,7 @@
 
         {{-- Toolbox & background --}}
         <section id="toolbox" class="scroll-mt-20 border-t border-line py-20 sm:py-28" aria-labelledby="toolbox-title">
-            <x-section-heading number="04" :eyebrow="__('site.sections.toolbox.eyebrow')" :title="__('site.sections.toolbox.title')" id="toolbox-title" />
+            <x-section-heading number="05" :eyebrow="__('site.sections.toolbox.eyebrow')" :title="__('site.sections.toolbox.title')" id="toolbox-title" />
 
             <div class="mt-14 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach(config('resume.skills') as $group => $skills)
@@ -228,7 +295,7 @@
         <section id="contact" class="scroll-mt-20 border-t border-line py-20 sm:py-28" aria-labelledby="contact-title">
             <div class="grid gap-12 lg:grid-cols-12">
                 <div class="lg:col-span-5">
-                    <x-section-heading number="05" :eyebrow="__('site.contact.eyebrow')" :title="__('site.contact.title')" id="contact-title">
+                    <x-section-heading number="06" :eyebrow="__('site.contact.eyebrow')" :title="__('site.contact.title')" id="contact-title">
                         <x-slot:intro>{{ __('site.contact.intro') }}</x-slot:intro>
                     </x-section-heading>
 
@@ -240,6 +307,24 @@
                                 type="button"
                                 x-data="{ copied: false }"
                                 x-on:click="$copy(@js(config('resume.email')), @js(__('site.contact.copied'))); copied = true; setTimeout(() => copied = false, 1800)"
+                                class="grid size-9 place-items-center rounded-lg text-muted transition-colors hover:bg-sunken hover:text-ink"
+                                :aria-label="copied ? @js(__('site.contact.copied')) : @js(__('site.contact.copy'))"
+                                aria-label="{{ __('site.contact.copy') }}"
+                            >
+                                <x-icon name="copy" class="size-4" x-show="! copied" />
+                                <x-icon name="check" class="size-4 text-accent" x-show="copied" x-cloak />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-6" data-reveal>
+                        <p class="text-sm text-subtle">{{ __('site.contact.phone_label') }}</p>
+                        <div class="mt-2 flex items-center gap-2">
+                            <a href="{{ Resume::phoneUri() }}" class="text-xl font-medium tracking-[-0.02em] whitespace-nowrap tabular-nums underline decoration-line-strong decoration-1 underline-offset-[0.2em] transition-colors hover:text-accent hover:decoration-current">{{ config('resume.phone') }}</a>
+                            <button
+                                type="button"
+                                x-data="{ copied: false }"
+                                x-on:click="$copy(@js(config('resume.phone')), @js(__('site.contact.copied'))); copied = true; setTimeout(() => copied = false, 1800)"
                                 class="grid size-9 place-items-center rounded-lg text-muted transition-colors hover:bg-sunken hover:text-ink"
                                 :aria-label="copied ? @js(__('site.contact.copied')) : @js(__('site.contact.copy'))"
                                 aria-label="{{ __('site.contact.copy') }}"

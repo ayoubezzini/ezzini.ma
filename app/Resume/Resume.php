@@ -12,6 +12,13 @@ class Resume
         return (int) round(CarbonImmutable::parse(config('resume.career_started_at'))->diffInYears());
     }
 
+    public static function phoneUri(): string
+    {
+        $digits = preg_replace('/[^\d+]/', '', config('resume.phone'));
+
+        return "tel:{$digits}";
+    }
+
     public static function pdfPath(string $locale): string
     {
         return "documents/ayoub-ezzini-cv-{$locale}.pdf";

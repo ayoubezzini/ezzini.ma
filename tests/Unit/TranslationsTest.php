@@ -21,7 +21,7 @@ it('has the same keys in French and English', function (string $file) {
 it('has copy for every project, job, skill group, school and language in the config', function (string $locale) {
     $copy = require lang_path("{$locale}/resume.php");
 
-    foreach (['projects', 'experience', 'skills', 'education'] as $section) {
+    foreach (['projects', 'experience', 'packages', 'skills', 'education'] as $section) {
         expect(array_keys($copy[$section]))->toEqualCanonicalizing(array_keys(config("resume.{$section}")));
     }
 

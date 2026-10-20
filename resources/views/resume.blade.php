@@ -26,12 +26,12 @@
         <style>
             @page {
                 size: A4;
-                margin: 14mm 15mm 14mm;
+                margin: 12mm 15mm;
             }
 
             .sheet {
                 font-size: 9.25pt;
-                line-height: 1.5;
+                line-height: 1.45;
                 /* Instrument Sans has a narrow space: at 9pt, "PHP · Laravel" looks cramped without it. */
                 word-spacing: 0.06em;
             }
@@ -86,6 +86,7 @@
                     </div>
                     <ul class="text-right font-mono text-[7.75pt] leading-[1.7] text-muted">
                         <li><a href="mailto:{{ config('resume.email') }}">{{ config('resume.email') }}</a></li>
+                        <li><a href="{{ Resume::phoneUri() }}">{{ config('resume.phone') }}</a></li>
                         <li><a href="{{ $siteUrl }}">{{ $site }}</a></li>
                         <li><a href="{{ config('resume.links.github') }}">{{ Str::after(config('resume.links.github'), 'https://') }}</a></li>
                         <li><a href="{{ config('resume.links.linkedin') }}">{{ Str::after(config('resume.links.linkedin'), 'https://www.') }}</a></li>
@@ -97,7 +98,7 @@
                     <p class="copy text-pretty">@copy('resume.summary')</p>
                 </section>
 
-                <section class="mt-5 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-5">
+                <section class="mt-4 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-4">
                     <h2 class="pt-px font-mono text-[7.5pt] uppercase tracking-[0.14em] text-subtle">{{ __('site.resume.products') }}</h2>
                     <ul class="space-y-2.5">
                         @foreach($projects as $project)
@@ -107,13 +108,13 @@
                                     <span class="font-mono text-[7.5pt] text-subtle">· {{ $project->host() }}</span>
                                 </p>
                                 <p class="text-pretty text-muted">{{ $project->copy('tagline') }}</p>
-                                <p class="mt-0.5 font-mono text-[7.25pt] text-subtle">{{ implode("\u{00A0}· ", $project->stack) }}</p>
+                                <p class="mt-0.5 font-mono text-[7.25pt] text-subtle">{{ implode("\u{00A0}· ", array_slice($project->stack, 0, 7)) }}</p>
                             </li>
                         @endforeach
                     </ul>
                 </section>
 
-                <section class="mt-5 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-5">
+                <section class="mt-4 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-4">
                     <h2 class="pt-px font-mono text-[7.5pt] uppercase tracking-[0.14em] text-subtle">{{ __('site.resume.experience') }}</h2>
                     <ol class="space-y-4">
                         @foreach(config('resume.experience') as $key => $job)
@@ -138,7 +139,31 @@
                     </ol>
                 </section>
 
-                <section class="avoid-break mt-5 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-5">
+                <section class="avoid-break mt-4 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-4">
+                    <h2 class="pt-px font-mono text-[7.5pt] uppercase tracking-[0.14em] text-subtle">{{ __('site.resume.open_source') }}</h2>
+                    <ul class="space-y-1">
+                        @foreach(config('resume.packages') as $key => $package)
+                            <li>
+                                <a href="{{ $package['repository'] }}" class="font-semibold">{{ $package['name'] }}</a>
+                                <span class="text-muted">· {{ __("resume.packages.{$key}.summary") }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </section>
+
+                <section class="avoid-break mt-4 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-4">
+                    <h2 class="pt-px font-mono text-[7.5pt] uppercase tracking-[0.14em] text-subtle">{{ __('site.resume.writing') }}</h2>
+                    <ul class="space-y-0.5">
+                        @foreach(config('resume.articles') as $article)
+                            <li class="flex items-baseline justify-between gap-4">
+                                <a href="{{ $article['url'] }}" lang="en">{{ $article['title'] }}</a>
+                                <span class="shrink-0 font-mono text-[7.5pt] text-subtle tabular-nums">{{ Carbon\CarbonImmutable::parse($article['date'])->locale(app()->getLocale())->translatedFormat('M Y') }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </section>
+
+                <section class="avoid-break mt-4 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-4">
                     <h2 class="pt-px font-mono text-[7.5pt] uppercase tracking-[0.14em] text-subtle">{{ __('site.resume.skills') }}</h2>
                     <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
                         @foreach(config('resume.skills') as $group => $skills)
@@ -148,7 +173,7 @@
                     </dl>
                 </section>
 
-                <section class="avoid-break mt-5 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-5">
+                <section class="avoid-break mt-4 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-4">
                     <h2 class="pt-px font-mono text-[7.5pt] uppercase tracking-[0.14em] text-subtle">{{ __('site.resume.education') }}</h2>
                     <ul class="space-y-1.5">
                         @foreach(config('resume.education') as $key => $dates)
@@ -163,21 +188,19 @@
                     </ul>
                 </section>
 
-                <section class="avoid-break mt-5 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-5">
+                <section class="avoid-break mt-4 grid grid-cols-[33mm_1fr] gap-x-6 gap-y-2 border-t border-line pt-4">
                     <h2 class="pt-px font-mono text-[7.5pt] uppercase tracking-[0.14em] text-subtle">{{ __('site.resume.languages') }}</h2>
                     <p>
                         @foreach(config('resume.languages') as $language)
                             <span class="font-medium">{{ __("resume.languages.{$language}.name") }}</span> <span class="text-muted">{{ __("resume.languages.{$language}.level") }}</span>@if(! $loop->last)<span class="px-2 text-line-strong">/</span>@endif
                         @endforeach
                     </p>
-                </section>
 
-                <section class="avoid-break mt-5 grid grid-cols-[33mm_1fr] gap-x-6 border-t border-line pt-5">
                     <h2 class="pt-px font-mono text-[7.5pt] uppercase tracking-[0.14em] text-subtle">{{ __('site.resume.interests') }}</h2>
                     <p class="text-muted">{{ __('resume.interests') }}</p>
                 </section>
 
-                <footer class="avoid-break mt-6 border-t border-line pt-4 text-center font-mono text-[7.5pt] text-subtle">
+                <footer class="avoid-break mt-4 border-t border-line pt-3 text-center font-mono text-[7.5pt] text-subtle">
                     {{ __('site.resume.more') }} <a href="{{ $siteUrl }}" class="text-accent">{{ $site }}</a>
                 </footer>
             </main>

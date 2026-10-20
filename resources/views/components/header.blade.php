@@ -16,10 +16,10 @@
 
         <nav aria-label="{{ __('site.nav.label') }}" class="hidden md:block">
             <ul class="flex items-center gap-1 text-sm text-muted">
-                @foreach(['work', 'experience', 'approach', 'contact'] as $section)
+                @foreach(['work' => 'work', 'experience' => 'experience', 'open-source' => 'open_source', 'approach' => 'approach', 'contact' => 'contact'] as $anchor => $label)
                     <li>
-                        <a href="{{ $onHome ? '' : $home }}#{{ $section }}" class="rounded-md px-3 py-2 transition-colors hover:text-ink">
-                            {{ __("site.nav.{$section}") }}
+                        <a href="{{ $onHome ? '' : $home }}#{{ $anchor }}" class="rounded-md px-3 py-2 transition-colors hover:text-ink">
+                            {{ __("site.nav.{$label}") }}
                         </a>
                     </li>
                 @endforeach

@@ -98,7 +98,7 @@ export default (items, groups) => ({
         }
 
         const actions = {
-            copyEmail: () => this.$copy(item.value, item.confirmation),
+            copy: () => this.$copy(item.value, item.confirmation),
             theme: () => this.$store.theme.toggle(),
             grid: () => this.$store.grid.toggle(),
         };

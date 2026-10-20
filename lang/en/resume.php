@@ -102,6 +102,8 @@ return [
                 'senior' => 'Senior Software Engineer',
             ],
             'highlights' => [
+                'Created four of the company’s open-source Laravel packages, [Verdant UI](:verdant), [Pinert](:pinert), [Findle](:findle) and [Harvest](:harvest), among many more in-house packages and services.',
+                'Write for the [company blog](:blog): PostgreSQL, testing, MCP servers and the stories behind our packages.',
                 'Build and maintain several client applications with Laravel, Symfony, Vue.js and Alpine.js.',
                 'Run MySQL and PostgreSQL databases and keep them fast as data grows.',
                 'Containerise development and deployment environments with Docker.',
@@ -151,6 +153,25 @@ return [
             'highlights' => [
                 'First professional steps: websites built with PHP, CSS and JavaScript.',
             ],
+        ],
+    ],
+
+    'packages' => [
+        'verdant' => [
+            'summary' => 'UI component library for Laravel: more than 70 Blade components',
+            'description' => 'More than 70 Blade components for Laravel, built on Alpine.js and Tailwind CSS: forms with translatable fields, rich text and image cropping, dynamic tables with filters and column management, modals, sidebars and calendars.',
+        ],
+        'pinert' => [
+            'summary' => 'Exception reports from every Laravel project, straight to Slack',
+            'description' => 'Detailed exception reports sent to Slack the moment they happen, so errors from every project land in one channel.',
+        ],
+        'findle' => [
+            'summary' => 'GDPR-friendly page-view analytics with bot detection',
+            'description' => 'GDPR-friendly page-view analytics: hashed visitor identifiers instead of personal data, bot detection and a statistics dashboard.',
+        ],
+        'harvest' => [
+            'summary' => 'SSH deployment automation, inspired by Laravel Envoy',
+            'description' => 'SSH deployment automation inspired by Laravel Envoy: scripted scenarios, confirmation prompts, jump hosts and sudo handling.',
         ],
     ],
 

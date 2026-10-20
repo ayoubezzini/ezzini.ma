@@ -36,6 +36,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ App\Resume\Resume::phoneUri() }}" class="grid size-9 place-items-center rounded-lg transition-colors hover:bg-sunken hover:text-ink" aria-label="{{ config('resume.phone') }}">
+                        <x-icon name="phone" class="size-[1.05rem]" />
+                    </a>
+                </li>
+                <li>
                     <a href="mailto:{{ config('resume.email') }}" class="grid size-9 place-items-center rounded-lg transition-colors hover:bg-sunken hover:text-ink" aria-label="{{ config('resume.email') }}">
                         <x-icon name="mail" class="size-[1.05rem]" />
                     </a>

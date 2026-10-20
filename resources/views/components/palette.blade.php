@@ -4,15 +4,19 @@
 
     $items = [
         ['id' => 'home', 'group' => 'pages', 'icon' => 'home', 'label' => __('site.palette.items.home'), 'href' => $home],
-        ...collect(['work' => 'sparkle', 'experience' => 'briefcase', 'approach' => 'grid', 'contact' => 'mail'])
-            ->map(fn (string $icon, string $section) => [
-                'id' => $section,
-                'group' => 'pages',
-                'icon' => $icon,
-                'label' => __("site.palette.items.{$section}"),
-                'href' => "{$home}#{$section}",
-            ])
-            ->values(),
+        ...collect([
+            ['work', 'work', 'sparkle'],
+            ['experience', 'experience', 'briefcase'],
+            ['open-source', 'open_source', 'code'],
+            ['approach', 'approach', 'grid'],
+            ['contact', 'contact', 'mail'],
+        ])->map(fn (array $section) => [
+            'id' => $section[0],
+            'group' => 'pages',
+            'icon' => $section[2],
+            'label' => __("site.palette.items.{$section[1]}"),
+            'href' => "{$home}#{$section[0]}",
+        ]),
         ['id' => 'resume', 'group' => 'pages', 'icon' => 'file', 'label' => __('site.palette.items.resume'), 'href' => route('resume'), 'keywords' => 'cv resume'],
         ...App\Resume\Project::all()->map(fn (App\Resume\Project $project) => [
             'id' => "project-{$project->slug}",
@@ -23,7 +27,9 @@
             'href' => route('projects.show', $project),
             'keywords' => $project->copy('tagline'),
         ]),
-        ['id' => 'copy-email', 'group' => 'actions', 'icon' => 'copy', 'label' => __('site.palette.items.copy_email'), 'hint' => config('resume.email'), 'action' => 'copyEmail', 'value' => config('resume.email'), 'confirmation' => __('site.contact.copied'), 'keywords' => 'email mail contact'],
+        ['id' => 'copy-email', 'group' => 'actions', 'icon' => 'copy', 'label' => __('site.palette.items.copy_email'), 'hint' => config('resume.email'), 'action' => 'copy', 'value' => config('resume.email'), 'confirmation' => __('site.contact.copied'), 'keywords' => 'email mail contact'],
+        ['id' => 'call', 'group' => 'actions', 'icon' => 'phone', 'label' => __('site.palette.items.call'), 'hint' => config('resume.phone'), 'href' => App\Resume\Resume::phoneUri(), 'keywords' => 'phone call telephone téléphone appeler'],
+        ['id' => 'copy-phone', 'group' => 'actions', 'icon' => 'copy', 'label' => __('site.palette.items.copy_phone'), 'action' => 'copy', 'value' => config('resume.phone'), 'confirmation' => __('site.contact.copied'), 'keywords' => 'phone telephone téléphone numéro number'],
         ['id' => 'download', 'group' => 'actions', 'icon' => 'download', 'label' => __('site.palette.items.download_resume'), 'href' => App\Resume\Resume::downloadUrl(app()->getLocale()), 'external' => true, 'keywords' => 'cv pdf resume'],
         ['id' => 'theme', 'group' => 'actions', 'icon' => 'moon', 'label' => __('site.palette.items.theme'), 'action' => 'theme', 'keywords' => 'dark light mode theme'],
         ['id' => 'language', 'group' => 'actions', 'icon' => 'language', 'label' => __('site.palette.items.language'), 'href' => App\Support\Localized::currentUrl($otherLocale), 'keywords' => 'language langue english français'],
