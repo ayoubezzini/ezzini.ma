@@ -38,6 +38,26 @@ return [
     ],
 
     'projects' => [
+        'bilalblil' => [
+            'tagline' => 'The ticket office for the live 100th episode of Bilal B Lil, in Casablanca.',
+            'role' => 'Freelance for the Bilal B Lil team: product, code, payments and infrastructure',
+            'summary' => 'Bilal B Lil celebrates its 100th episode on stage, in front of its community, on 28 November 2026 in Casablanca, and a large part of the proceeds goes to Yassine, a member of that community who is fighting cancer. Sales open all at once to people who have followed the show for three seasons, so the site has to survive the rush, never sell the same seat twice and get everyone through the door on the night. bilalblil.com is the official site, the only ticket office and the team’s dashboard.',
+            'image_alt' => 'The Bilal B Lil home page: the episode 100 poster with the date, the venue and the ticket buttons',
+            'built' => [
+                'Booking for several categories in one order, paid by card through YouCan Pay or AdProMaxPay, or by bank transfer with a proof the team checks before tickets are issued.',
+                'A waiting room for the sales opening: each visitor draws a position from a single Redis counter and is let in at a rate the team can change live, without a single database query while they wait.',
+                'PDF tickets with one QR code per person, signed with an HMAC so a forged code is refused before the database is even asked.',
+                'A door scanner that runs in a phone’s browser: camera, entry and quick-exit modes, and codes short enough to read aloud.',
+                'A dashboard for the team: live capacities, orders, invitations, VIP seats on request with personal payment links, offer links and bulk emails.',
+                'An episode archive that fills itself from the YouTube channel’s feed every 15 minutes, with no API key.',
+            ],
+            'details' => [
+                'Every stock change is a single conditional `UPDATE`: two buyers can never take the last seat, and nobody waits on a lock at the peak.',
+                'A payment that arrives after its hold expired still gets its tickets if seats remain. If the category is full, the order is marked for refund instead of overselling.',
+                'Bank details are copied onto each order, so changing them later never alters the instructions a buyer already received.',
+                'Public pages are cached by Cloudflare for 60 seconds, booking and ticket pages never are, and the landing page was load-tested before the opening.',
+            ],
+        ],
         'khlass' => [
             'tagline' => 'Invoicing and compliance for Moroccan auto-entrepreneurs.',
             'summary' => 'Moroccan freelancers live under hard limits: a yearly turnover ceiling, a flat tax on every dirham collected, and a 30% withholding once a single client pays more than 80,000 MAD in a year. Generic invoicing tools make PDFs. Khlass answers the questions that actually matter: how much room is left this year, which client is about to cross the threshold, and how much tax is due this quarter.',

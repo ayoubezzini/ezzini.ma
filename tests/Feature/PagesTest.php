@@ -28,6 +28,15 @@ it('renders every project case study in every language', function (string $local
         ->assertSee(__("resume.projects.{$project->slug}.tagline", locale: $locale)));
 })->with(['en', 'fr']);
 
+it('shows the client role on client work and the solo role on own products', function () {
+    $this->get('/en/projects/bilalblil')
+        ->assertSee(__('resume.projects.bilalblil.role', locale: 'en'))
+        ->assertDontSee(__('site.project.role_value', locale: 'en'));
+
+    $this->get('/en/projects/khlass')
+        ->assertSee(__('site.project.role_value', locale: 'en'));
+});
+
 it('renders the printable résumé in every language', function (string $locale) {
     $this->get("/{$locale}/cv")
         ->assertOk()

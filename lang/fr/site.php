@@ -76,8 +76,8 @@ return [
     'sections' => [
         'work' => [
             'eyebrow' => 'Projets choisis',
-            'title' => 'Mes produits',
-            'intro' => 'Trois produits en production, conçus, développés et exploités par moi. Pas d’équipe derrière, pas de template dessous.',
+            'title' => 'Produits et missions',
+            'intro' => 'Une billetterie pour un client et trois produits à moi, tous en production, développés et exploités par moi. Pas d’équipe derrière, pas de template dessous.',
         ],
         'experience' => [
             'eyebrow' => 'Parcours',
@@ -171,7 +171,7 @@ return [
         'back' => 'Retour au site',
         'profile' => 'Profil',
         'experience' => 'Expérience',
-        'products' => 'Mes produits',
+        'products' => 'Produits et missions',
         'skills' => 'Compétences',
         'education' => 'Formation',
         'languages' => 'Langues',

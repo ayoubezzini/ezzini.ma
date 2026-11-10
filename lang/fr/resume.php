@@ -38,6 +38,26 @@ return [
     ],
 
     'projects' => [
+        'bilalblil' => [
+            'tagline' => 'La billetterie du 100ᵉ épisode de Bilal B Lil, en public à Casablanca.',
+            'role' => 'Freelance pour l’équipe de Bilal B Lil : produit, code, paiements et infrastructure',
+            'summary' => 'Bilal B Lil fête son 100ᵉ épisode sur scène, devant sa communauté, le 28 novembre 2026 à Casablanca, et une grande partie des recettes va à Yassine, un membre de cette communauté qui se bat contre un cancer. Les ventes ouvrent d’un coup pour un public qui suit l’émission depuis trois saisons : le site doit tenir la ruée, ne jamais vendre deux fois la même place et faire entrer tout le monde le soir venu. bilalblil.com est le site officiel, la seule billetterie et le tableau de bord de l’équipe.',
+            'image_alt' => 'La page d’accueil de Bilal B Lil : l’affiche de l’épisode 100 avec la date, le lieu et les boutons de réservation',
+            'built' => [
+                'La réservation de plusieurs catégories en une seule commande, payée par carte via YouCan Pay ou AdProMaxPay, ou par virement avec un justificatif vérifié par l’équipe avant l’émission des billets.',
+                'Une salle d’attente pour l’ouverture des ventes : chaque visiteur tire un numéro depuis un seul compteur Redis et entre à un rythme que l’équipe ajuste en direct, sans une seule requête en base pendant l’attente.',
+                'Des billets PDF avec un QR code par personne, signé par HMAC : un code falsifié est refusé avant même d’interroger la base.',
+                'Un scanner de porte qui tourne dans le navigateur d’un téléphone : caméra, modes entrée et sortie rapide, et des codes assez courts pour être lus à voix haute.',
+                'Un tableau de bord pour l’équipe : jauges en direct, commandes, invitations, places VIP sur demande avec liens de paiement personnels, liens d’offre et e-mails groupés.',
+                'Une archive des épisodes qui se remplit seule depuis le flux de la chaîne YouTube toutes les 15 minutes, sans clé d’API.',
+            ],
+            'details' => [
+                'Chaque changement de stock est un seul `UPDATE` conditionnel : deux acheteurs ne peuvent jamais prendre la dernière place, et personne n’attend un verrou au pic des ventes.',
+                'Un paiement arrivé après l’expiration de sa réservation reçoit quand même ses billets s’il reste des places. Si la catégorie est pleine, la commande est marquée à rembourser plutôt que de survendre.',
+                'Les coordonnées bancaires sont copiées sur chaque commande : les modifier plus tard ne change jamais les instructions déjà reçues par un acheteur.',
+                'Les pages publiques sont mises en cache par Cloudflare pendant 60 secondes, jamais la réservation ni les billets, et la page d’accueil a été testée en charge avant l’ouverture.',
+            ],
+        ],
         'khlass' => [
             'tagline' => 'Facturation et conformité pour les auto-entrepreneurs marocains.',
             'summary' => 'Les freelances marocains vivent avec des limites strictes : un plafond de chiffre d’affaires annuel, un impôt forfaitaire sur chaque dirham encaissé, et une retenue à la source de 30 % dès qu’un même client dépasse 80 000 MAD dans l’année. Les outils de facturation génériques font des PDF. Khlass répond aux questions qui comptent vraiment : quelle marge reste-t-il cette année ? Quel client va franchir le seuil ? Combien d’impôt est dû ce trimestre ?',

@@ -76,8 +76,8 @@ return [
     'sections' => [
         'work' => [
             'eyebrow' => 'Selected work',
-            'title' => 'Products I own',
-            'intro' => 'Three live products, designed, built and run by me. No team behind them, no template under them.',
+            'title' => 'Products and client work',
+            'intro' => 'A ticket office for a client and three products of my own, all live, built and run by me. No team behind them, no template under them.',
         ],
         'experience' => [
             'eyebrow' => 'Experience',
@@ -171,7 +171,7 @@ return [
         'back' => 'Back to the site',
         'profile' => 'Profile',
         'experience' => 'Experience',
-        'products' => 'Products I own',
+        'products' => 'Products and client work',
         'skills' => 'Skills',
         'education' => 'Education',
         'languages' => 'Languages',

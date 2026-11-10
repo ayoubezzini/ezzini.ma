@@ -18,7 +18,7 @@
             <dl class="mt-12 grid grid-cols-2 gap-6 border-t border-line pt-6 text-sm sm:grid-cols-[2fr_1fr_1fr]" data-reveal style="--reveal-delay: 180ms">
                 <div class="col-span-2 sm:col-span-1">
                     <dt class="font-mono text-xs text-subtle">{{ __('site.project.role') }}</dt>
-                    <dd class="mt-1.5 font-medium text-pretty">{{ __('site.project.role_value') }}</dd>
+                    <dd class="mt-1.5 font-medium text-pretty">{{ $project->role() }}</dd>
                 </div>
                 <div>
                     <dt class="font-mono text-xs text-subtle">{{ __('site.project.year') }}</dt>

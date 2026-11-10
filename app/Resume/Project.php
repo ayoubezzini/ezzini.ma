@@ -4,6 +4,7 @@ namespace App\Resume;
 
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Lang;
 
 readonly class Project implements UrlRoutable
 {
@@ -61,6 +62,13 @@ readonly class Project implements UrlRoutable
     public function copy(string $key): mixed
     {
         return __("resume.projects.{$this->slug}.{$key}");
+    }
+
+    public function role(): string
+    {
+        $key = "resume.projects.{$this->slug}.role";
+
+        return Lang::has($key) ? __($key) : __('site.project.role_value');
     }
 
     public function getRouteKey(): string

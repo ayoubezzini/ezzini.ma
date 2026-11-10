@@ -36,7 +36,15 @@ return [
 
     // Screenshots live in public/images/projects/{locale}/{slug}.webp, in the language of the page.
     // Stacks lead with what's distinctive: the home page and the CV only show the first few.
+    // Client work sets a `role` in its copy; Ayoub's own products fall back to site.project.role_value.
     'projects' => [
+        'bilalblil' => [
+            'name' => 'Bilal B Lil',
+            'url' => 'https://bilalblil.com',
+            'year' => 2026,
+            'accent' => '#E10F45',
+            'stack' => ['Laravel 13', 'PHP 8.4', 'YouCan Pay', 'Redis', 'Cloudflare', 'Dompdf', 'MySQL', 'Turnstile', 'Cloudflare R2', 'Verdant UI', 'Alpine.js', 'Tailwind CSS', 'Blade'],
+        ],
         'khlass' => [
             'name' => 'Khlass',
             'url' => 'https://khlass.ma',
