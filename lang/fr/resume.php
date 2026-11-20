@@ -44,7 +44,7 @@ return [
             'summary' => 'Bilal B Lil fête son 100ᵉ épisode sur scène, devant sa communauté, le 28 novembre 2026 à Casablanca, et une grande partie des recettes va à Yassine, un membre de cette communauté qui se bat contre un cancer. Les ventes ouvrent d’un coup pour un public qui suit l’émission depuis trois saisons : le site doit tenir la ruée, ne jamais vendre deux fois la même place et faire entrer tout le monde le soir venu. bilalblil.com est le site officiel, la seule billetterie et le tableau de bord de l’équipe.',
             'image_alt' => 'La page d’accueil de Bilal B Lil : l’affiche de l’épisode 100 avec la date, le lieu et les boutons de réservation',
             'built' => [
-                'La réservation de plusieurs catégories en une seule commande, payée par carte via YouCan Pay ou AdProMaxPay, ou par virement avec un justificatif vérifié par l’équipe avant l’émission des billets.',
+                'La réservation de plusieurs catégories en une seule commande, payée par carte via Payzone ou AdProMaxPay, ou par virement avec un justificatif vérifié par l’équipe avant l’émission des billets.',
                 'Une salle d’attente pour l’ouverture des ventes : chaque visiteur tire un numéro depuis un seul compteur Redis et entre à un rythme que l’équipe ajuste en direct, sans une seule requête en base pendant l’attente.',
                 'Des billets PDF avec un QR code par personne, signé par HMAC : un code falsifié est refusé avant même d’interroger la base.',
                 'Un scanner de porte qui tourne dans le navigateur d’un téléphone : caméra, modes entrée et sortie rapide, et des codes assez courts pour être lus à voix haute.',

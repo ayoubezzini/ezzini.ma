@@ -43,7 +43,7 @@ return [
             'url' => 'https://bilalblil.com',
             'year' => 2026,
             'accent' => '#E10F45',
-            'stack' => ['Laravel 13', 'PHP 8.4', 'YouCan Pay', 'Redis', 'Cloudflare', 'Dompdf', 'MySQL', 'Turnstile', 'Cloudflare R2', 'Verdant UI', 'Alpine.js', 'Tailwind CSS', 'Blade'],
+            'stack' => ['Laravel 13', 'PHP 8.4', 'Payzone', 'Redis', 'Cloudflare', 'Dompdf', 'MySQL', 'Turnstile', 'Cloudflare R2', 'Verdant UI', 'Alpine.js', 'Tailwind CSS', 'Blade'],
         ],
         'khlass' => [
             'name' => 'Khlass',

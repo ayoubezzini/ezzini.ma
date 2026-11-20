@@ -44,7 +44,7 @@ return [
             'summary' => 'Bilal B Lil celebrates its 100th episode on stage, in front of its community, on 28 November 2026 in Casablanca, and a large part of the proceeds goes to Yassine, a member of that community who is fighting cancer. Sales open all at once to people who have followed the show for three seasons, so the site has to survive the rush, never sell the same seat twice and get everyone through the door on the night. bilalblil.com is the official site, the only ticket office and the team’s dashboard.',
             'image_alt' => 'The Bilal B Lil home page: the episode 100 poster with the date, the venue and the ticket buttons',
             'built' => [
-                'Booking for several categories in one order, paid by card through YouCan Pay or AdProMaxPay, or by bank transfer with a proof the team checks before tickets are issued.',
+                'Booking for several categories in one order, paid by card through Payzone or AdProMaxPay, or by bank transfer with a proof the team checks before tickets are issued.',
                 'A waiting room for the sales opening: each visitor draws a position from a single Redis counter and is let in at a rate the team can change live, without a single database query while they wait.',
                 'PDF tickets with one QR code per person, signed with an HMAC so a forged code is refused before the database is even asked.',
                 'A door scanner that runs in a phone’s browser: camera, entry and quick-exit modes, and codes short enough to read aloud.',
